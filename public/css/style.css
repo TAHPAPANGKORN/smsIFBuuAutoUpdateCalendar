@@ -386,7 +386,16 @@ input:focus {
     position: fixed;
     top: 2rem;
     right: 2rem;
+    top: calc(1.5rem + env(safe-area-inset-top, 0px));
+    right: calc(1.5rem + env(safe-area-inset-right, 0px));
     z-index: 1000;
+}
+
+@media (max-width: 768px) {
+    .theme-nav {
+        top: calc(1rem + env(safe-area-inset-top, 0px));
+        right: calc(1rem + env(safe-area-inset-right, 0px));
+    }
 }
 
 .icon-btn {
