@@ -236,8 +236,11 @@
                 // Construct full URLs with /std/ prefix
                 const fullIcsUrl = originWithProtocol + '/std/' + sid;
                 
+                // Google takes some time to refresh, so we add a timestamp to force it
+                const googleIcsUrl = fullIcsUrl + '?v=' + Date.now();
+                
                 appleLink.href = 'webcal://' + host + '/std/' + sid;
-                googleLink.href = 'https://www.google.com/calendar/render?cid=' + encodeURIComponent(fullIcsUrl);
+                googleLink.href = 'https://www.google.com/calendar/render?cid=' + encodeURIComponent(googleIcsUrl);
                 
                 appleLink.removeAttribute('disabled');
                 googleLink.removeAttribute('disabled');
