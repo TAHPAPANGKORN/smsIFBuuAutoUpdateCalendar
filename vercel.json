@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/:std_id",
+      "destination": "/api/index?std_id=:std_id"
+    }
+  ],
+  "functions": {
+    "api/index.py": {
+      "runtime": "vercel-python@0.1.0"
+    }
+  }
+}

@@ -36,8 +36,6 @@ class Scraper:
         }
 
         response = self.session.post(f"{self.base_url}/student-data", data=payload)
-        print(f"[*] Response status: {response.status_code}")
-        
         soup = BeautifulSoup(response.text, 'html.parser')
         
         # New approach: Parse from the JSON embedded in the script tag

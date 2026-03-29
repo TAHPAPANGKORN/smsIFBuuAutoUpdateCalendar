@@ -45,7 +45,7 @@ class CalendarGenerator:
         
         return start_dt, end_dt
 
-    def generate(self, output_file="exam_schedule.ics"):
+    def generate(self, output_file=None):
         cal = Calendar()
         cal.add('prodid', '-//Exam Schedule Scraper//BUU//')
         cal.add('version', '2.0')
@@ -68,10 +68,13 @@ class CalendarGenerator:
             
             cal.add_component(event)
 
-        with open(output_file, 'wb') as f:
-            f.write(cal.to_ical())
+        ical_data = cal.to_ical()
         
-        return output_file
+        if output_file:
+            with open(output_file, 'wb') as f:
+                f.write(ical_data)
+        
+        return ical_data
 
 if __name__ == "__main__":
     # Test data
