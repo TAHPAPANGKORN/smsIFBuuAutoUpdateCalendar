@@ -2,6 +2,10 @@
   "version": 2,
   "rewrites": [
     {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
       "source": "/std/:std_id(\\d+)",
       "destination": "/api/index?std_id=:std_id"
     },
