@@ -17,6 +17,16 @@ except ImportError:
 
 app = Flask(__name__)
 
+# Serve the landing page from the root directory
+@app.route('/')
+def home():
+    root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    index_path = os.path.join(root_dir, 'index.html')
+    if os.path.exists(index_path):
+        with open(index_path, 'r', encoding='utf-8') as f:
+            return f.read()
+    return "Error: index.html not found in root.", 404
+
 # API: Only handle the calendar generation
 @app.route('/std/<std_id>')
 def get_calendar(std_id):
