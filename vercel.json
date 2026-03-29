@@ -2,11 +2,7 @@
   "version": 2,
   "rewrites": [
     {
-      "source": "/",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/:std_id",
+      "source": "/:std_id(\\d+)",
       "destination": "/api/index?std_id=:std_id"
     }
   ]
