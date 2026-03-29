@@ -149,8 +149,8 @@
             background: var(--apple); 
         }
 
-        .btn-google { 
-            background: var(--google);
+        .btn-copy { 
+            background: #10b981; /* Emerald green */
         }
 
         .btn:disabled, .btn[disabled] {
@@ -159,7 +159,7 @@
             cursor: not-allowed;
             transform: none !important;
             box-shadow: none !important;
-            pointer-events: none; /* Block all clicks */
+            pointer-events: none;
         }
         
         .btn svg { 
@@ -169,15 +169,44 @@
             fill: currentColor; 
         }
 
-        .instruction {
-            margin-top: 2rem;
+        .guide-section {
+            margin-top: 2.5rem;
             text-align: left;
-            font-size: 0.8rem;
-            background: #f3f3f3;
-            padding: 1.25rem;
-            border-radius: 14px;
-            color: #92400e;
-            line-height: 1.5;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 2rem;
+            display: none; /* Show only when SID is valid */
+        }
+
+        .guide-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+        }
+
+        .guide-step {
+            display: flex;
+            margin-bottom: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            line-height: 1.4;
+        }
+
+        .step-num {
+            background: #e2e8f0;
+            color: var(--text-main);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-right: 10px;
+            flex-shrink: 0;
         }
 
         .footer {
@@ -207,15 +236,34 @@
             <a id="apple_link" class="btn btn-apple" disabled>
                 Add to Apple Calendar
             </a>
-            <a id="google_link" class="btn btn-google" target="_blank" disabled>
-                Add to Google Calendar
-            </a>
+            <button id="copy_btn" class="btn btn-copy" disabled>
+                Copy Calendar Link
+            </button>
         </div>
 
-        <div class="instruction">
-            Apple Calendar: โปรดเลือก "Subscribe" หรือ "สมัครรับ" เพื่อให้ตารางสอบอัปเดตอัตโนมัติเมื่อมีการเปลี่ยนแปลงจากทางคณะ
+        <div id="guide" class="guide-section">
+            <div class="guide-title">วิธีการนำไปใส่ใน Google Calendar</div>
+            <div class="guide-step">
+                <div class="step-num">1</div>
+                <div>กดปุ่ม "Copy Calendar Link" ด้านบน</div>
+            </div>
+            <div class="guide-step">
+                <div class="step-num">2</div>
+                <div>ไปที่ <a href="https://calendar.google.com" target="_blank">Google Calendar</a></div>
+            </div>
+            <div class="guide-step">
+                <div class="step-num">3</div>
+                <div>เลือกเครื่องหมายบวก (+) ข้างปุ่ม "ปฏิทินอื่น" (Other calendars)</div>
+            </div>
+            <div class="guide-step">
+                <div class="step-num">4</div>
+                <div>เลือก "จาก URL" (From URL) และวางลิงก์ที่คัดลอกมา</div>
+            </div>
+            <div class="guide-step">
+                <div class="step-num">5</div>
+                <div>กด "เพิ่มปฏิทิน" (Add calendar) เป็นอันเสร็จสิ้น!</div>
+            </div>
         </div>
-
 
         <div class="footer">
             Develop by Papangkorn Pitjawong
@@ -225,36 +273,51 @@
     <script>
         const input = document.getElementById('std_id');
         const appleLink = document.getElementById('apple_link');
-        const googleLink = document.getElementById('google_link');
+        const copyBtn = document.getElementById('copy_btn');
+        const guide = document.getElementById('guide');
+
+        let currentIcsUrl = "";
 
         function updateLinks() {
             const sid = input.value.trim();
             const host = window.location.host;
-            const originWithProtocol = window.location.origin; // e.g. https://...
+            const originWithProtocol = window.location.origin;
             
             if (sid.length >= 8) {
-                // Construct full URLs with /std/ prefix
-                const fullIcsUrl = originWithProtocol + '/std/' + sid;
-                
-                // Google takes some time to refresh, so we add a timestamp to force it
-                const googleIcsUrl = fullIcsUrl + '?v=' + Date.now();
+                currentIcsUrl = originWithProtocol + '/std/' + sid;
                 
                 appleLink.href = 'webcal://' + host + '/std/' + sid;
-                googleLink.href = 'https://www.google.com/calendar/render?cid=' + encodeURIComponent(googleIcsUrl);
                 
                 appleLink.removeAttribute('disabled');
-                googleLink.removeAttribute('disabled');
+                copyBtn.removeAttribute('disabled');
+                guide.style.display = 'block';
             } else {
                 appleLink.href = "javascript:void(0)";
                 appleLink.setAttribute('disabled', 'true');
                 
-                googleLink.href = "javascript:void(0)";
-                googleLink.setAttribute('disabled', 'true');
+                copyBtn.setAttribute('disabled', 'true');
+                guide.style.display = 'none';
+            }
+        }
+
+        async function copyToClipboard() {
+            try {
+                await navigator.clipboard.writeText(currentIcsUrl);
+                const originalText = copyBtn.innerText;
+                copyBtn.innerText = "Copied!";
+                copyBtn.style.background = "#059669";
+                setTimeout(() => {
+                    copyBtn.innerText = originalText;
+                    copyBtn.style.background = "#10b981";
+                }, 2000);
+            } catch (err) {
+                alert("กรุณาคัดลอก URL นี้: " + currentIcsUrl);
             }
         }
 
         input.addEventListener('input', updateLinks);
-        updateLinks(); // Initial state
+        copyBtn.addEventListener('click', copyToClipboard);
+        updateLinks();
     </script>
 </body>
 </html>
