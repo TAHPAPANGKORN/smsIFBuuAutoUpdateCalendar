@@ -16,9 +16,9 @@ except ImportError:
         from scraper import Scraper
         from calendar_gen import CalendarGenerator
 
-# Resolve the absolute path to the 'public' directory
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-PUBLIC_DIR = os.path.join(os.path.dirname(CURRENT_DIR), 'public')
+# Resolve the absolute path to the project root
+# Now that files are moved out of 'public', root is our static folder.
+PUBLIC_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Local development via Flask static_folder
 app = Flask(__name__, static_folder=PUBLIC_DIR, static_url_path='')

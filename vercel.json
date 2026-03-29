@@ -3,19 +3,19 @@
   "rewrites": [
     {
       "source": "/",
-      "destination": "/public/index.html"
+      "destination": "/index.html"
     },
     {
       "source": "/css/(.*)",
-      "destination": "/public/css/$1"
+      "destination": "/css/$1"
     },
     {
       "source": "/js/(.*)",
-      "destination": "/public/js/$1"
+      "destination": "/js/$1"
     },
     {
       "source": "/favicon.svg",
-      "destination": "/public/favicon.svg"
+      "destination": "/favicon.svg"
     },
     {
       "source": "/std/:std_id",
