@@ -17,24 +17,14 @@ except ImportError:
         from calendar_gen import CalendarGenerator
 
 # Resolve the absolute path to the 'public' directory
-# This works both on Vercel (/var/task/public) and locally.
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 PUBLIC_DIR = os.path.join(os.path.dirname(CURRENT_DIR), 'public')
 
+# Local development via Flask static_folder
 app = Flask(__name__, static_folder=PUBLIC_DIR, static_url_path='')
 
-@app.route('/')
-def home():
-    # Serve index.html from the static_folder
-    try:
-        return app.send_static_file('index.html')
-    except Exception as e:
-        print(f"Error serving index.html: {e}")
-        # Secondary fallback for Vercel's unique file structure
-        try:
-            return app.send_static_file('public/index.html')
-        except:
-            return Response("InforExam Sync: Page not found. Please check deployment.", status=404)
+# Vercel handles the home page (index.html) and static assets via vercel.json.
+# This Flask function serves the API and webcal routes.
 
 # API: Only handle the calendar generation
 @app.route('/std/<std_id>')
