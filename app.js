@@ -130,7 +130,13 @@ const App = {
 
     renderExams() {
         if (!this.state.exams || this.state.exams.length === 0) {
-            this.elements.examList.innerHTML = `<div style="text-align:center; padding:2rem; color:var(--text-muted)">No upcoming exams found.</div>`;
+            this.elements.examList.innerHTML = `
+                <div style="text-align:center; padding:2rem; color:var(--text-muted)">
+                    <p>📅 No upcoming exams found.</p>
+                    <p style="font-size:0.85rem; margin-top:0.5rem; opacity:0.8;">
+                        You can still subscribe! Your calendar will automatically sync as soon as exams are posted.
+                    </p>
+                </div>`;
             this.elements.countdown.innerText = 'Empty';
             return;
         }

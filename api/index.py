@@ -44,9 +44,6 @@ def get_calendar(std_id):
     if exams is None:
         return Response("Error fetching data from university website. Please check Student ID.", status=500, mimetype='text/plain')
     
-    if not exams:
-        return Response(f"No exam schedule found for student ID: {std_id}.", status=404, mimetype='text/plain')
-        
     generator = CalendarGenerator(exams)
     ical_data = generator.generate()
     
